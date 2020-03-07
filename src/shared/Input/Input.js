@@ -1,17 +1,25 @@
 import React from 'react';
-import { Field, ErrorMessage } from 'formik';
+import { makeStyles } from '@material-ui/core/styles';
 
-const Input = ({ className, name, placeholder, type }) => {
+const useStyles = makeStyles({
+	input: {
+		color: '#D6D6D6',
+		fontSize: 14,
+		borderBottom: '1px solid #43425D80',
+	},
+});
+
+const Input = ({ name, type, value, className, onChange, defaultValue }) => {
+	const classes = useStyles();
 	return (
-		<div>
-			<Field
-				name={name}
-				type={type}
-				placeholder={placeholder}
-				className={className}
-			/>
-			<ErrorMessage name={name} component="div" />
-		</div>
+		<input
+			name={name}
+			type={type}
+			value={value}
+			onChange={onChange}
+			defaultValue={defaultValue}
+			className={`${classes.input} ${className}`}
+		/>
 	);
 };
 

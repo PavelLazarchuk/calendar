@@ -2,12 +2,8 @@ import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
-import { Redirect, Switch, Route } from 'react-router-dom';
 
-import Header from '../../components/Header';
-import Day from '../../components/DayCalendar';
-import Week from '../../components/WeekCalendar';
-import Month from '../../components/MonthCalendar';
+import Calendar from '../../components/Calendar';
 
 const useStyles = makeStyles({
 	root: {
@@ -22,6 +18,11 @@ const useStyles = makeStyles({
 	paper: {
 		padding: '20px',
 	},
+	txt: {
+		fontSize: 18,
+		color: '#43425D',
+		marginBottom: 20,
+	},
 });
 
 const Page = () => {
@@ -30,14 +31,9 @@ const Page = () => {
 		<div className={classes.root}>
 			<Container>
 				<h1 className={classes.title}>Calendar</h1>
-				<Redirect to="month" />
 				<Paper className={classes.paper}>
-					<Header />
-					<Switch>
-						<Route path="/month" component={Month} />
-						<Route path="/week" component={Week} />
-						<Route path="/day" component={Day} />
-					</Switch>
+					<div className={classes.txt}>Calendar View</div>
+					<Calendar />
 				</Paper>
 			</Container>
 		</div>
