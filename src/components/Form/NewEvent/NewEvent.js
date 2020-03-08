@@ -38,10 +38,10 @@ const NewEvent = ({ setSlot, events, addOneEvent }) => {
 			title: value.title,
 			notes: value.notes,
 		};
-		// if (data.title.length <= 30) {
-		addOneEvent(data);
-		// 	setSlot(false);
-		// }
+		if (data.title.length <= 30) {
+			addOneEvent(data);
+			setSlot(false);
+		}
 	};
 
 	return (

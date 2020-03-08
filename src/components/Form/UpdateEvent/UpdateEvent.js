@@ -46,15 +46,19 @@ const UpdateEvent = ({
 	};
 
 	const update = () => {
-		const data = {
+		const idx = eventList.indexOf(events);
+		const updatedEvent = {
 			id: value.id,
-			start: new Date(`${value.start}T${value.time}`),
-			end: new Date(`${value.start}T${value.time}`),
 			title: value.title,
 			notes: value.notes,
+			start: new Date(`${value.start}T${value.time}`),
+			end: new Date(`${value.start}T${value.time}`),
 		};
-		if (data.title.length <= 30) {
-			updateOneEvent(eventList, data);
+		const nextEvents = [...eventList];
+		nextEvents.splice(idx, 1, updatedEvent);
+
+		if (updatedEvent.title.length <= 30) {
+			updateOneEvent(nextEvents);
 			setSlotEvent(false);
 		}
 	};

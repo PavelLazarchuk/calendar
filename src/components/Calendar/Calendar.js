@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { momentLocalizer } from 'react-big-calendar';
 
-import './calendar.css';
 import Form from '../Form';
 import EventCard from '../EventCard';
 import getPosition from '../../utils/getPosition';
+import DraggableCalendar from '../DraggableCalendar';
+import { moveOneEvent } from '../../store/event/actions';
 
-const CalendarWrap = ({ eventList }) => {
+const CalendarWrap = ({ eventList, moveOneEvent }) => {
 	const [slot, setSlot] = useState(false);
 	const [events, setEvent] = useState({});
-	const localizer = momentLocalizer(moment);
 	const [slotEvent, setSlotEvent] = useState(false);
-	const [eventLisiState, setEventLisiState] = useState([]);
+	const [eventsL, setEventsL] = useState(eventList);
 	const [position, setPosition] = useState({
 		top: 0,
 		left: 0,
@@ -33,26 +34,39 @@ const CalendarWrap = ({ eventList }) => {
 		setSlotEvent(false);
 	};
 
+	const moveEvent = ({ event, start, end }) => {
+		const idx = eventsL.indexOf(event);
+		const updatedEvent = { ...event, start, end };
+		const nextEvents = [...eventsL];
+		nextEvents.splice(idx, 1, updatedEvent);
+
+		moveOneEvent(nextEvents);
+	};
+
 	useEffect(() => {
-		setEventLisiState(eventList);
-	}, [eventList, eventLisiState]);
+		setEventsL(eventList);
+	}, [eventList]);
 
 	return (
 		<div className="position-relative" id="position">
-			<Calendar
-				selectable={true}
-				showMultiDayTimes
-				events={eventLisiState}
-				startAccessor="start"
-				endAccessor="end"
-				timeslots={4}
-				components={{
-					event: EventCard,
-				}}
-				localizer={localizer}
-				onSelectSlot={onSelectSlot}
-				onSelectEvent={onSelectEvent}
-			/>
+			<DndProvider backend={HTML5Backend}>
+				<DraggableCalendar
+					selectable={true}
+					showMultiDayTimes
+					startAccessor="start"
+					events={eventList}
+					endAccessor="end"
+					timeslots={4}
+					components={{
+						event: EventCard,
+					}}
+					onEventDrop={moveEvent}
+					onSelectSlot={onSelectSlot}
+					onSelectEvent={onSelectEvent}
+					localizer={momentLocalizer(moment)}
+				/>
+			</DndProvider>
+
 			<Form
 				slot={slot}
 				events={events}
@@ -71,4 +85,4 @@ const mapStateToProps = ({ event }) => {
 	};
 };
 
-export default connect(mapStateToProps)(CalendarWrap);
+export default connect(mapStateToProps, { moveOneEvent })(CalendarWrap);

@@ -27,11 +27,9 @@ export const addOneEvent = data => {
 	};
 };
 
-export const updateOneEvent = (state, data) => {
+export const updateOneEvent = data => {
 	return dispatch => {
-		const index = state.findIndex(e => e.id === data.id);
-		state.splice(index, 1, data);
-		dispatch(updateEvent(state));
+		dispatch(updateEvent(data));
 	};
 };
 
@@ -40,5 +38,11 @@ export const deleteOneEvent = (state, id) => {
 		const index = state.findIndex(e => e.id === id);
 		state.splice(index, 1);
 		dispatch(deleteEvent(state));
+	};
+};
+
+export const moveOneEvent = data => {
+	return dispatch => {
+		dispatch(updateEvent(data));
 	};
 };

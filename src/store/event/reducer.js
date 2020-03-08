@@ -18,7 +18,7 @@ const initialState = {
 		},
 		{
 			id: 2,
-			title: '3 dcsdcd',
+			title: 'Swimming',
 			notes: 'description3',
 			start: new Date(2020, 2, 6),
 			end: new Date(2020, 2, 6),
